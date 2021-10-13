@@ -44,7 +44,9 @@ const Board = () => {
         { isClicked, squares, isX, stepNumber, winner },
     ]);
     //console.log("initial history is ", history);
-    const [future, setFuture] = useState([{}]);
+    const [future, setFuture] = useState([
+        { isClicked, squares, isX, stepNumber, winner },
+    ]);
     //console.log(`squares is ${Array.isArray(squares)}`, squares.slice());
     const handleModal = () => setShowModal(!showModal);
     useEffect(() => {
@@ -97,8 +99,9 @@ const Board = () => {
         return arr;
     };
     const handleUndo = () => {
+        
         try {
-            console.log("inside Undo", history[2]);
+           if(history[0].isClicked==undefined)return ; 
             const {
                 isClicked: pastClicked,
                 squares: pastSquares,
@@ -130,6 +133,8 @@ const Board = () => {
     };
     const handleRedo = () => {
         try {
+            if(future[0].isClicked==undefined)return ;
+            console.log(future[2])
             const {
                 isClicked: futureClicked,
                 squares: futureSquares,
@@ -137,6 +142,8 @@ const Board = () => {
                 stepNumber: futureStepNumber,
                 winner: futureWinner,
             } = future[future.length - 1];
+            console.log("After future", future)
+            
             setHistory([
                 ...history,
                 {
@@ -190,7 +197,7 @@ const Board = () => {
             <Button onClick={handleReset}>Reset Game</Button>
             <Button onClick={handleUndo}>Undo Game</Button>
             <Button onClick={handleRedo}>Redo Game</Button>
-            <Button onClick={test}>test Game</Button>
+            
             <div className="playerOne">
                 PlayerOne = {playerOne}
                 <br />
