@@ -1,0 +1,37 @@
+/* .board{
+    max-width: 20%;
+    max-height: 50%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.board > button{
+    background-color: aqua;
+    flex-basis: 20%;
+    display: inline-block;
+} */
+
+.board {
+    width: 50vw;
+    height: 50vh;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+
+
+.box {
+  background: #444;
+  border: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #AAA;
+}
+.close{
+    position: relative;
+    text-align: right;
+}
