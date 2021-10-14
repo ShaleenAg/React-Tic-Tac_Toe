@@ -21,6 +21,10 @@ const closeStyle = {
     justifyContent:"flex-end"
 }
 const WinnerModal = (props)=>{
+    const handlePlayer = ()=>{
+        if(props.winner=="X") return "PlayerOne"
+        else return "PlayerTwo"
+    }
     return (
         <Modal open={props.open} onClose={props.onClose}>
             <Box sx={style}>
@@ -36,7 +40,7 @@ const WinnerModal = (props)=>{
                 <div className="modal">
                     Game Over!!{" "}
                     {props.winner
-                        ? "Winner is " + props.winner
+                        ? "Winner is " + handlePlayer()
                         : "No Winner was found :("}
                 </div>
             </Box>
