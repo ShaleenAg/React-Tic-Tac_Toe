@@ -59,7 +59,7 @@
 @media(min-width:500px){
 
 .board {
-    width: 25git vw;
+    width: 25vw;
     height: 50vh;
     display: grid;
     grid-template-rows: repeat(3, 0.9fr);
