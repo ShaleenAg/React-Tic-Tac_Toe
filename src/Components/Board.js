@@ -1,10 +1,16 @@
 import { Square } from "./Square";
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import WinnerModal from "./Modal";
+import WinnerModal from "./WinnerModal";
 import "./style.css";
-const calculateWinner = (squares) => {
-    console.log(squares);
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import HistoryIcon from "@mui/icons-material/History";
+import HistoryModal from "./HistoryModal";
+
+export const calculateWinner = (squares) => {
+    console.log(`squares is ${squares}`);
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
@@ -27,12 +33,17 @@ const calculateWinner = (squares) => {
     }
     return null;
 };
-const tt = "Hello from test";
-const test = () => {
-    console.log(tt);
+const buttonStyle = {
+    margin: "5px",
 };
+const handleArray = (arr) => {
+    arr.pop();
+    return arr;
+};
+
 const Board = () => {
-    const [showModal, setShowModal] = useState(false);
+    const [showRewardsModal, setShowRewardsModal] = useState(false);
+    const [showHistoryModal, setShowHistoryModal] = useState(false);
     const [isClicked, setIsClicked] = useState(Array(9).fill(false));
     const [playerOne, setPlayerOne] = useState(0);
     const [playerTwo, setPlayerTwo] = useState(0);
@@ -48,14 +59,15 @@ const Board = () => {
         { isClicked, squares, isX, stepNumber, winner },
     ]);
     //console.log(`squares is ${Array.isArray(squares)}`, squares.slice());
-    const handleModal = () => setShowModal(!showModal);
+    const handleRewardsModal = () => setShowRewardsModal(!showRewardsModal);
+    const handleHistoryModal = () => setShowHistoryModal(!showHistoryModal);
     useEffect(() => {
         //alert("Use Effect triggered!!")
         if (winner) {
-            setShowModal(true);
+            setShowRewardsModal(true);
             handleWinner(winner);
         } else if (stepNumber >= 9) {
-            setShowModal(true);
+            setShowRewardsModal(true);
         }
     }, [winner, stepNumber]);
     const onClick = (i) => {
@@ -94,14 +106,10 @@ const Board = () => {
         setStepNumber(stepNumber + 1);
         setWinner(calculateWinner(newSquares));
     };
-    const handleArray = (arr) => {
-        arr.pop();
-        return arr;
-    };
+
     const handleUndo = () => {
-        
         try {
-           if(history[0].isClicked==undefined)return ; 
+            if (history[0].isClicked == undefined) return;
             const {
                 isClicked: pastClicked,
                 squares: pastSquares,
@@ -133,8 +141,8 @@ const Board = () => {
     };
     const handleRedo = () => {
         try {
-            if(future[0].isClicked==undefined)return ;
-            console.log(future[2])
+            if (future[0].isClicked == undefined) return;
+            console.log(future[2]);
             const {
                 isClicked: futureClicked,
                 squares: futureSquares,
@@ -142,8 +150,8 @@ const Board = () => {
                 stepNumber: futureStepNumber,
                 winner: futureWinner,
             } = future[future.length - 1];
-            console.log("After future", future)
-            
+            console.log("After future", future);
+
             setHistory([
                 ...history,
                 {
@@ -181,7 +189,8 @@ const Board = () => {
         setHistory([{ isClicked, squares, isX, stepNumber, winner }]);
     };
     return (
-        <>
+        <div className="game">
+            <h1 className="game-title">Tic Tac Toe !!</h1>
             <div className="board">
                 {squares.map((square, i) => {
                     return (
@@ -190,25 +199,59 @@ const Board = () => {
                             data-key={i}
                             value={square}
                             onClick={() => onClick(i)}
+                            className="squares"
+                            data-testid="square"
                         />
                     );
                 })}
             </div>
-            <Button onClick={handleReset}>Reset Game</Button>
-            <Button onClick={handleUndo}>Undo Game</Button>
-            <Button onClick={handleRedo}>Redo Game</Button>
-            
-            <div className="playerOne">
-                PlayerOne = {playerOne}
-                <br />
-                PlayerTwo = {playerTwo}
+            <div className="buttons">
+                <Button
+                    sx={buttonStyle}
+                    variant="contained"
+                    onClick={handleUndo}
+                    startIcon={<UndoIcon />}
+                >
+                    Undo
+                </Button>
+                <Button
+                    sx={buttonStyle}
+                    variant="contained"
+                    onClick={handleRedo}
+                    startIcon={<RedoIcon />}
+                >
+                    Redo
+                </Button>
+                <Button
+                    sx={buttonStyle}
+                    variant="contained"
+                    onClick={handleReset}
+                    startIcon={<RefreshIcon />}
+                >
+                    Refresh
+                </Button>
+
+                <Button
+                    sx={buttonStyle}
+                    variant="contained"
+                    onClick={handleHistoryModal}
+                    startIcon={<HistoryIcon />}
+                >
+                    History
+                </Button>
             </div>
             <WinnerModal
-                open={showModal}
-                onClose={handleModal}
+                open={showRewardsModal}
+                onClose={handleRewardsModal}
                 winner={winner}
             />
-        </>
+            <HistoryModal
+                playerOne={playerOne}
+                playerTwo={playerTwo}
+                open={showHistoryModal}
+                onClose={handleHistoryModal}
+            />
+        </div>
     );
 };
 

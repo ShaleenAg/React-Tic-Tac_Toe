@@ -12,16 +12,36 @@
     flex-basis: 20%;
     display: inline-block;
 } */
-
-.board {
-    width: 50vw;
-    height: 50vh;
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-columns: repeat(3, 1fr);
+*{
+    box-sizing: border-box;
 }
 
+.game{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
 
+}
+.board {
+    width: 50vw;
+    height: 30vh;
+    display: grid;
+    grid-template-rows: repeat(3, 0.9fr);
+    grid-template-columns: repeat(3, 0.9fr);
+    
+}
+.squares{
+    font-size: 2em;
+}
+.buttons{
+    margin: 20px;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+
+}
 
 .box {
   background: #444;
@@ -34,4 +54,24 @@
 .close{
     position: relative;
     text-align: right;
+}
+
+@media(min-width:500px){
+
+.board {
+    width: 35vw;
+    height: 50vh;
+    display: grid;
+    grid-template-rows: repeat(3, 0.9fr);
+    grid-template-columns: repeat(3, 0.9fr);
+}
+.squares{
+    font-size: 5em;
+}
+.buttons{
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    
+}
 }
