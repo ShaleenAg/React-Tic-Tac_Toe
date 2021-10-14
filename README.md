@@ -1,4 +1,4 @@
-# Tic Tac Toe app in React
+# Tic Tac Toe App in React
 
 The app uses Material UI for styling and time travel is also implemented using Hooks.
 
